@@ -1,14 +1,5 @@
 
 
-# class Elements
-#    class Sensors
-#      class TempSensor
-#      class FlowSensor
-#    class ActiveElements
-#      class Heater
-#      class Valve
-#      class Mixer
-
 class Element(object):
     """Element"""
     def __init__(self):
@@ -120,3 +111,5 @@ if __name__ == "__main__":
     v.turn_on()
     v.turn_off()
     v.turn_on()
+
+    h = Heater()
