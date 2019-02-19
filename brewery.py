@@ -1,4 +1,4 @@
-
+# Comments must be kept
 
 class Element(object):
     """Element"""
