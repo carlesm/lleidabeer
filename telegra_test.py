@@ -8,7 +8,7 @@ def handle(msg):
     bot.sendMessage(chat_id, 'TEST MESSAGE')
 
 
-bot = telepot.Bot("650160973:AAGmZCClJCNJPRkrQ0yDOFwYEpHpCvghTh0")
+bot = telepot.Bot(TOKEN)
 print(bot.getMe())
 
 MessageLoop(bot, handle).run_as_thread()
