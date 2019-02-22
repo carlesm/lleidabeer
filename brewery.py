@@ -99,6 +99,10 @@ class Valve(ActiveElement):
             print(".")
 
 
+
+
+
+
 if __name__ == "__main__":
     t = TemperatureSensor()
     print(t.get_value())
