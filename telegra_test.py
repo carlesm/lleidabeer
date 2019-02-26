@@ -18,7 +18,12 @@ def handle(msg):
         else:
             bot.sendMessage(chat_id, 'NOT UNDERSTOOD:' + command)
 
+<<<<<<< HEAD
 bot = telepot.Bot("650160973:AAFSMG_dslaA0l7ibhYnmv8rLQtlHrEe-BE")
+=======
+
+bot = telepot.Bot(TOKEN)
+>>>>>>> 58ca8942108d718edb071ee2cbba67d525eac53f
 print(bot.getMe())
 
 MessageLoop(bot, handle).run_as_thread()
