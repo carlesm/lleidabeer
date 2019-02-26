@@ -19,6 +19,8 @@ class Sensor(Element):
     def set_calibration(self, calibration):
         self.calibration = calibration
 
+    def has_alarm(self):
+        return False
 
 class FlowSensor(Sensor):
     """FlowSensor"""

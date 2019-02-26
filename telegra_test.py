@@ -3,12 +3,22 @@ from telepot.loop import MessageLoop
 import time
 
 def handle(msg):
-    print(msg)
-    chat_id = msg['chat']['id']
-    bot.sendMessage(chat_id, 'TEST MESSAGE')
+    content_type, chat_type, chat_id = telepot.glance(msg)
+    if content_type == 'text':
+        command = msg['text']
+        if command == '/temp':
+            bot.sendMessage(chat_id, 'TEMPERATURE')
+        elif command == '/control':
+            keyboard = {'keyboard': [['Stop','Start','Idle']]}
+            bot.sendMessage(chat_id,"Enter command", reply_markup=keyboard)
+        elif command == 'Stop':
+            # do something to Stop
+            keyboard = {'hide_keyboard': True}
+            bot.sendMessage(chat_id,"Stopping", reply_markup=keyboard)
+        else:
+            bot.sendMessage(chat_id, 'NOT UNDERSTOOD:' + command)
 
-
-bot = telepot.Bot("650160973:AAGmZCClJCNJPRkrQ0yDOFwYEpHpCvghTh0")
+bot = telepot.Bot("650160973:AAFSMG_dslaA0l7ibhYnmv8rLQtlHrEe-BE")
 print(bot.getMe())
 
 MessageLoop(bot, handle).run_as_thread()

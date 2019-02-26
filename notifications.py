@@ -1,4 +1,5 @@
 import telepot
+from telepot.loop import MessageLoop
 
 
 class Notification(object):
@@ -35,11 +36,27 @@ class TelegramChannel(Channel):
     """docstring for TelegramChannel."""
     def __init__(self):
         super(TelegramChannel, self).__init__()
-        self.bot = telepot.Bot(TOKEN)
-        # MessageLoop(self.bot, self.handle).run_as_thread()
+        self.bot = telepot.Bot("650160973:AAFSMG_dslaA0l7ibhYnmv8rLQtlHrEe-BE")
+        MessageLoop(self.bot, self.handle).run_as_thread()
 
     def send_notification(self, notification):
-        self.bot.sendMessage(CHATID,"* "+str(notification.criticity)+" "+notification.text)
+        self.bot.sendMessage(141990140,"* "+str(notification.criticity)+" "+notification.text)
+
+    def handle(self, msg):
+            content_type, chat_type, chat_id = telepot.glance(msg)
+            if content_type == 'text':
+                command = msg['text']
+                if command == '/temp':
+                    bot.sendMessage(chat_id, 'TEMPERATURE')
+                elif command == '/control':
+                    keyboard = {'keyboard': [['Stop','Start','Idle']]}
+                    bot.sendMessage(chat_id,"Enter command", reply_markup=keyboard)
+                elif command == 'Stop':
+                    # do something to Stop
+                    keyboard = {'hide_keyboard': True}
+                    bot.sendMessage(chat_id,"Stopping", reply_markup=keyboard)
+                else:
+                    bot.sendMessage(chat_id, 'NOT UNDERSTOOD:' + command)
 
 
 class ScreenChannel(Channel):
