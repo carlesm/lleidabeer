@@ -1,0 +1,5 @@
+Telegram:
+  Token: 'YOUR TELEGRAM TOKEN HERE'
+  Users:
+    - UserID one
+    - UserID two

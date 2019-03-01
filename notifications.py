@@ -34,13 +34,14 @@ class Channel(object):
 
 class TelegramChannel(Channel):
     """docstring for TelegramChannel."""
-    def __init__(self):
+    def __init__(self, token, userid):
         super(TelegramChannel, self).__init__()
-        self.bot = telepot.Bot("650160973:AAEzmWv1PwD67PqS3oD290BX_YnWLoGOtRI")
+        self.bot = telepot.Bot(token)
         MessageLoop(self.bot, self.handle).run_as_thread()
+        self.userid = userid
 
     def send_notification(self, notification):
-        self.bot.sendMessage(141990140,"* "+str(notification.criticity)+" "+notification.text)
+        self.bot.sendMessage(self.userid,"* "+str(notification.criticity)+" "+notification.text)
 
     def handle(self, msg):
             content_type, chat_type, chat_id = telepot.glance(msg)
@@ -70,7 +71,7 @@ class ScreenChannel(Channel):
 
 if __name__ == "__main__":
     screen = ScreenChannel()
-    telegram = TelegramChannel()
+    telegram = TelegramChannel("650160973:AAEzmWv1PwD67PqS3oD290BX_YnWLoGOtRI", 141990140 )
     notification = Notification("This is a test", 1)
     screen.send_notification(notification)
     telegram.send_notification(notification)
