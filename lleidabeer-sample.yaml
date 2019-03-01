@@ -1,5 +1,14 @@
 Telegram:
-  Token: 'YOUR TELEGRAM TOKEN HERE'
-  Users:
-    - UserID one
-    - UserID two
+  Token: 'YOUR TOKEN HERE'
+  Users: YOUR ID HERE
+
+Sensors:
+  Temperature:
+    - 'Wort'
+    - 'Ambient'
+  FlowMeter:
+    - 'Main'
+    - 'Backup'
+  CO2Meter:
+    - 'Fermentation'
+    - 'Environment'

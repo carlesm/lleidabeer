@@ -1,4 +1,6 @@
 # Comments must be kept
+import random
+
 
 class Element(object):
     """Element"""
@@ -8,9 +10,10 @@ class Element(object):
 
 class Sensor(Element):
     """Sensor"""
-    def __init__(self):
+    def __init__(self, name="GenericSensor"):
         super(Sensor, self).__init__()
         self.calibration = 1.0
+        self.name = name
 
     def get_value(self):
         self.update_value()
@@ -24,28 +27,32 @@ class Sensor(Element):
 
 class FlowSensor(Sensor):
     """FlowSensor"""
-    def __init__(self):
-        super(FlowSensor, self).__init__()
+    def __init__(self, name="FlowSensor"):
+        super(FlowSensor, self).__init__(name)
+        self.value = 0
 
     def update_value(self):
-        self.value = 10
+        self.value += 1
+        if self.value > 1000:
+            self.value = 0
 
 class TemperatureSensor(Sensor):
     """TemperatureSensor"""
-    def __init__(self):
-        super(TemperatureSensor, self).__init__()
+    def __init__(self, name="TemperatureSensor"):
+        super(TemperatureSensor, self).__init__(name)
+        self.value = 15.0
 
     def update_value(self):
-        self.value = 12
+        self.value = self.value + random.uniform(-1.0, 1.0)
 
 
 class CO2Sensor(Sensor):
     """CO2Sensor"""
-    def __init__(self):
-        super(CO2Sensor, self).__init__()
+    def __init__(self, name="CO2Sensor"):
+        super(CO2Sensor, self).__init__(name)
 
     def update_value(self):
-        self.value = 100
+        self.value = random.random()*100.0
 
 
 class ActiveElement(Element):

@@ -16,17 +16,26 @@ class LleidaBeer(object):
         self.notification_list = []
         notification = n.Notification("This is a test", 1)
         self.notification_list.append(notification)
-        self.sensor_list = []
         self.channel = n.TelegramChannel(self.cfg["Telegram"]["Token"],
                                          self.cfg["Telegram"]["Users"])
+        self._create_sensors()
+
+    def _create_sensors(self):
         # Create Sensors
-        self.sensor_list.append(b.TemperatureSensor())
-        self.sensor_list.append(b.FlowSensor())
+        self.sensor_list = []
+        for ts in self.cfg['Sensors']['Temperature']:
+            self.sensor_list.append(b.TemperatureSensor(ts))
+
+        for ts in self.cfg['Sensors']['FlowMeter']:
+            self.sensor_list.append(b.FlowSensor(ts))
+
+        for ts in self.cfg['Sensors']['CO2Meter']:
+            self.sensor_list.append(b.CO2Sensor(ts))
+
 
     def _get_configuration(self):
-        f = open("lleidabeer.yaml","r")
-        self.cfg = yaml.load(f)
-        f.close()
+        with open("lleidabeer.yaml","r") as f:
+            self.cfg = yaml.load(f)
         pprint.pprint(self.cfg)
 
     def main(self):
