@@ -36,7 +36,7 @@ class TelegramChannel(Channel):
     """docstring for TelegramChannel."""
     def __init__(self):
         super(TelegramChannel, self).__init__()
-        self.bot = telepot.Bot("650160973:AAFSMG_dslaA0l7ibhYnmv8rLQtlHrEe-BE")
+        self.bot = telepot.Bot("650160973:AAEzmWv1PwD67PqS3oD290BX_YnWLoGOtRI")
         MessageLoop(self.bot, self.handle).run_as_thread()
 
     def send_notification(self, notification):
