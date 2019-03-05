@@ -24,7 +24,13 @@ class LleidaBeer(object):
         # Create Sensors
         self.sensor_list = []
         for ts in self.cfg['Sensors']['Temperature']:
-            self.sensor_list.append(b.TemperatureSensor(ts))
+            if isinstance(ts, dict):
+                name = list(ts.keys())[0]
+                attri = ts[name]
+            else:
+                name = ts
+                attri = dict()
+            self.sensor_list.append(b.TemperatureSensor(name=name, **attri))
 
         for ts in self.cfg['Sensors']['FlowMeter']:
             self.sensor_list.append(b.FlowSensor(ts))

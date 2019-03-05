@@ -1,6 +1,6 @@
 # Comments must be kept
 import random
-
+import pprint
 
 class Element(object):
     """Element"""
@@ -10,10 +10,12 @@ class Element(object):
 
 class Sensor(Element):
     """Sensor"""
-    def __init__(self, name="GenericSensor"):
+    def __init__(self, name="GenericSensor", **kwargs):
         super(Sensor, self).__init__()
         self.calibration = 1.0
         self.name = name
+        print("*Creating")
+        pprint.pprint(kwargs)
 
     def get_value(self):
         self.update_value()
@@ -38,8 +40,8 @@ class FlowSensor(Sensor):
 
 class TemperatureSensor(Sensor):
     """TemperatureSensor"""
-    def __init__(self, name="TemperatureSensor"):
-        super(TemperatureSensor, self).__init__(name)
+    def __init__(self, name="TemperatureSensor", **kwargs):
+        super(TemperatureSensor, self).__init__(name, **kwargs)
         self.value = 15.0
 
     def update_value(self):
