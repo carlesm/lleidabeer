@@ -17,6 +17,16 @@ class Sensor(Element):
         print("*Creating")
         pprint.pprint(kwargs)
 
+        # self.alarm = kwargs.get("alarm", None)
+
+        if "alarm" in kwargs:
+            self.set_alarm(kwargs["alarm"])
+        else:
+            self.alarm = None
+
+    def set_alarm(self, alarm):
+        self.alarm = float(alarm)
+
     def get_value(self):
         self.update_value()
         return self.value * self.calibration
@@ -25,7 +35,10 @@ class Sensor(Element):
         self.calibration = calibration
 
     def has_alarm(self):
-        return False
+        if self.alarm:
+            return self.value >= self.alarm
+        else:
+            return False
 
 class FlowSensor(Sensor):
     """FlowSensor"""
