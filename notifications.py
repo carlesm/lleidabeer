@@ -34,11 +34,12 @@ class Channel(object):
 
 class TelegramChannel(Channel):
     """docstring for TelegramChannel."""
-    def __init__(self, token, userid):
+    def __init__(self, token, userid, command_list = None):
         super(TelegramChannel, self).__init__()
         self.bot = telepot.Bot(token)
         MessageLoop(self.bot, self.handle).run_as_thread()
         self.userid = userid
+        self.command_list = command_list
 
     def send_notification(self, notification):
         self.bot.sendMessage(self.userid,"* "+str(notification.criticity)+" "+notification.text)
@@ -47,17 +48,33 @@ class TelegramChannel(Channel):
             content_type, chat_type, chat_id = telepot.glance(msg)
             if content_type == 'text':
                 command = msg['text']
-                if command == '/temp':
-                    bot.sendMessage(chat_id, 'TEMPERATURE')
-                elif command == '/control':
-                    keyboard = {'keyboard': [['Stop','Start','Idle']]}
-                    bot.sendMessage(chat_id,"Enter command", reply_markup=keyboard)
-                elif command == 'Stop':
-                    # do something to Stop
-                    keyboard = {'hide_keyboard': True}
-                    bot.sendMessage(chat_id,"Stopping", reply_markup=keyboard)
-                else:
-                    bot.sendMessage(chat_id, 'NOT UNDERSTOOD:' + command)
+                if command[0] == '/':
+                    if command == '/help':
+                        # do_send_help()
+                        return
+                    else:
+                        for cmd in self.command_list:
+                            if command == cmd:
+                                message = self.command_list[cmd](msg)
+                                self.bot.sendMessage(chat_id, message)
+                                return
+                        # search command in a list
+                        # dispatch command
+                        pass
+                # else:
+                #     bot.sendMessage(chat_id, 'NOT UNDERSTOOD:' + command)
+                # #
+                # if command == '/temp':
+                #     bot.sendMessage(chat_id, 'TEMPERATURE')
+                # elif command == '/control':
+                #     keyboard = {'keyboard': [['Stop','Start','Idle']]}
+                #     bot.sendMessage(chat_id,"Enter command", reply_markup=keyboard)
+                # elif command == 'Stop':
+                #     # do something to Stop
+                #     keyboard = {'hide_keyboard': True}
+                #     bot.sendMessage(chat_id,"Stopping", reply_markup=keyboard)
+                # else:
+                bot.sendMessage(chat_id, 'NOT UNDERSTOOD:' + command)
 
 
 class ScreenChannel(Channel):
