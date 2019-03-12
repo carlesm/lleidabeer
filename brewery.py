@@ -58,6 +58,7 @@ class TemperatureSensor(Sensor):
         if "factory" in kwargs:
             kwargs["factory"].register_command("/temp", self.send_temp, self.slug)
             kwargs["factory"].register_command("/temp", self.send_temp, "*")
+            # TODO: /setalarm <sensor> <value>
         self.value = 15.0
 
     def update_value(self):

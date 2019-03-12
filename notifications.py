@@ -65,6 +65,7 @@ class TelegramChannel(Channel):
                                     message = message + " " + pmessage+"\n"
                                 self.bot.sendMessage(chat_id, message)
                                 return
+                bot.sendMessage(chat_id, 'NOT UNDERSTOOD:' + command)
                 # else:
                 #     bot.sendMessage(chat_id, 'NOT UNDERSTOOD:' + command)
                 # #
@@ -78,7 +79,6 @@ class TelegramChannel(Channel):
                 #     keyboard = {'hide_keyboard': True}
                 #     bot.sendMessage(chat_id,"Stopping", reply_markup=keyboard)
                 # else:
-                bot.sendMessage(chat_id, 'NOT UNDERSTOOD:' + command)
 
 
 class ScreenChannel(Channel):
