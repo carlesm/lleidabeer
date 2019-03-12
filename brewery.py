@@ -14,9 +14,8 @@ class Sensor(Element):
         super(Sensor, self).__init__()
         self.calibration = 1.0
         self.name = name
-        print("*Creating")
-        pprint.pprint(kwargs)
-
+        # print("*Creating")
+        # pprint.pprint(kwargs)
         # self.alarm = kwargs.get("alarm", None)
 
         if "alarm" in kwargs:
@@ -55,15 +54,17 @@ class TemperatureSensor(Sensor):
     """TemperatureSensor"""
     def __init__(self, name="TemperatureSensor", **kwargs):
         super(TemperatureSensor, self).__init__(name, **kwargs)
+        self.slug = kwargs.get("slug",name)
         if "factory" in kwargs:
-            kwargs["factory"].register_command("/temp", self.send_temp)
+            kwargs["factory"].register_command("/temp", self.send_temp, self.slug)
+            kwargs["factory"].register_command("/temp", self.send_temp, "*")
         self.value = 15.0
 
     def update_value(self):
         self.value = self.value + random.uniform(-1.0, 1.0)
 
     def send_temp(self, msg):
-        return "Temperature is" + str(self.value)
+        return str(self.name)+" temperature is" + str(self.value)
 
 class CO2Sensor(Sensor):
     """CO2Sensor"""

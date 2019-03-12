@@ -41,8 +41,14 @@ class LleidaBeer(object):
         for ts in self.cfg['Sensors']['CO2Meter']:
             self.sensor_list.append(b.CO2Sensor(ts))
 
-    def register_command(self, cmdtext, cmdfunction):
-        self.cmd_list[cmdtext] = cmdfunction
+    # FIXME: subcmd shouldn't be none or deal with none
+    def register_command(self, cmdtext, cmdfunction, subcmd = None ):
+        print("DEBUG "+cmdtext+"*"+subcmd)
+        if cmdtext not in self.cmd_list:
+            self.cmd_list[cmdtext] = dict()
+        if subcmd not in self.cmd_list[cmdtext]:
+            self.cmd_list[cmdtext][subcmd] = list()
+        self.cmd_list[cmdtext][subcmd].append(cmdfunction)
 
     def _get_configuration(self):
         with open("lleidabeer.yaml","r") as f:

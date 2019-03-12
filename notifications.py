@@ -53,14 +53,18 @@ class TelegramChannel(Channel):
                         # do_send_help()
                         return
                     else:
-                        for cmd in self.command_list:
-                            if command == cmd:
-                                message = self.command_list[cmd](msg)
+                        parts = command.split(" ")
+                        if parts[0] in self.command_list:
+                            # TODO: check length (no subcommand)
+                            if len(parts) < 2:
+                                parts.append("*")
+                            if parts[1] in self.command_list[parts[0]]:
+                                message = ""
+                                for f in self.command_list[parts[0]][parts[1]]:
+                                    pmessage = f(msg)
+                                    message = message + " " + pmessage+"\n"
                                 self.bot.sendMessage(chat_id, message)
                                 return
-                        # search command in a list
-                        # dispatch command
-                        pass
                 # else:
                 #     bot.sendMessage(chat_id, 'NOT UNDERSTOOD:' + command)
                 # #
