@@ -22,10 +22,8 @@ class LleidaBeer(object):
                                          self.cfg["Telegram"]["Users"],
                                          self.cmd_list)
 
-    def _create_sensors(self):
-        # Create Sensors
-        self.sensor_list = []
-        for ts in self.cfg['Sensors']['Temperature']:
+    def _create_sensor_type(self, sensor_type, sensor_class ):
+        for ts in self.cfg['Sensors'][sensor_type]:
             if isinstance(ts, dict):
                 name = list(ts.keys())[0]
                 attri = ts[name]
@@ -33,16 +31,25 @@ class LleidaBeer(object):
                 name = ts
                 attri = dict()
             attri["factory"] = self
-            self.sensor_list.append(b.TemperatureSensor(name=name, **attri))
+            self.sensor_list.append(sensor_class(name=name, **attri))
 
-        for ts in self.cfg['Sensors']['FlowMeter']:
-            self.sensor_list.append(b.FlowSensor(ts))
 
-        for ts in self.cfg['Sensors']['CO2Meter']:
-            self.sensor_list.append(b.CO2Sensor(ts))
+    def _create_sensors(self):
+        # Create Sensors
+        self.sensor_list = []
+        stype = {
+            "Temperature": b.TemperatureSensor,
+            "FlowMeter": b.FlowSensor,
+            'CO2Meter': b.CO2Sensor,
+        }
+        for k in stype:
+            self._create_sensor_type(k, stype[k])
+
 
     # FIXME: subcmd shouldn't be none or deal with none
+    # IDEA: instead of subcmd as string, deal with subcmd as list
     def register_command(self, cmdtext, cmdfunction, subcmd = None ):
+        # TODO: All commands to lowercase
         print("DEBUG "+cmdtext+"*"+subcmd)
         if cmdtext not in self.cmd_list:
             self.cmd_list[cmdtext] = dict()

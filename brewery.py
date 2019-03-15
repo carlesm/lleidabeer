@@ -1,23 +1,25 @@
 # Comments must be kept
 import random
 import pprint
+from slugify import UniqueSlugify
+
+custom_slugify = UniqueSlugify()
 
 class Element(object):
     """Element"""
-    def __init__(self):
+    def __init__(self, name = "Element", **kwargs):
         super(Element, self).__init__()
+        self.name = name
+        # FIXME: name can have spaces, should correct
+        self.slug = custom_slugify(kwargs.get("slug",name))
 
 
 class Sensor(Element):
     """Sensor"""
     def __init__(self, name="GenericSensor", **kwargs):
-        super(Sensor, self).__init__()
+        super(Sensor, self).__init__(name, **kwargs)
+        self.kwargs = kwargs
         self.calibration = 1.0
-        self.name = name
-        # print("*Creating")
-        # pprint.pprint(kwargs)
-        # self.alarm = kwargs.get("alarm", None)
-
         if "alarm" in kwargs:
             self.set_alarm(kwargs["alarm"])
         else:
@@ -39,26 +41,35 @@ class Sensor(Element):
         else:
             return False
 
+    def register_command(self, command, callback, use_asterisk=False):
+        if "factory" in self.kwargs:
+            self.kwargs["factory"].register_command(command, callback, self.slug)
+            if use_asterisk:
+                self.kwargs["factory"].register_command(command, callback, "*")
+
+
 class FlowSensor(Sensor):
     """FlowSensor"""
-    def __init__(self, name="FlowSensor"):
-        super(FlowSensor, self).__init__(name)
+    def __init__(self, name="FlowSensor", **kwargs):
+        super(FlowSensor, self).__init__(name, **kwargs)
         self.value = 0
+        self.register_command("/flow", self.send_flow, use_asterisk=True)
+        # TODO: /setalarm <sensor> <value>
 
     def update_value(self):
         self.value += 1
         if self.value > 1000:
             self.value = 0
 
+    def send_flow(self, msg):
+        return "Flow in "+str(self.name)+" is" + str(self.value)+" liters"
+
 class TemperatureSensor(Sensor):
     """TemperatureSensor"""
     def __init__(self, name="TemperatureSensor", **kwargs):
         super(TemperatureSensor, self).__init__(name, **kwargs)
-        self.slug = kwargs.get("slug",name)
-        if "factory" in kwargs:
-            kwargs["factory"].register_command("/temp", self.send_temp, self.slug)
-            kwargs["factory"].register_command("/temp", self.send_temp, "*")
-            # TODO: /setalarm <sensor> <value>
+        self.register_command("/temp", self.send_temp, use_asterisk=True)
+        # TODO: /setalarm <sensor> <value>
         self.value = 15.0
 
     def update_value(self):
@@ -69,13 +80,17 @@ class TemperatureSensor(Sensor):
 
 class CO2Sensor(Sensor):
     """CO2Sensor"""
-    def __init__(self, name="CO2Sensor"):
-        super(CO2Sensor, self).__init__(name)
+    def __init__(self, name="CO2Sensor",  **kwargs):
+        super(CO2Sensor, self).__init__(name, **kwargs)
+        self.register_command("/co2", self.send_co2, use_asterisk=True)
 
     def update_value(self):
         self.value = random.random()*100.0
 
+    def send_co2(self, msg):
+        return str(self.name)+" CO2 is" + str(self.value)
 
+# TODO: add kwargs and name to active elements
 class ActiveElement(Element):
     """ActiveElement"""
     def __init__(self):

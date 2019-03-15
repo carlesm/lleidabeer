@@ -48,6 +48,7 @@ class TelegramChannel(Channel):
             content_type, chat_type, chat_id = telepot.glance(msg)
             if content_type == 'text':
                 command = msg['text']
+                # TODO: all commands in lowercase
                 if command[0] == '/':
                     if command == '/help':
                         # do_send_help()
@@ -65,7 +66,7 @@ class TelegramChannel(Channel):
                                     message = message + " " + pmessage+"\n"
                                 self.bot.sendMessage(chat_id, message)
                                 return
-                bot.sendMessage(chat_id, 'NOT UNDERSTOOD:' + command)
+                self.bot.sendMessage(chat_id, 'NOT UNDERSTOOD:' + command)
                 # else:
                 #     bot.sendMessage(chat_id, 'NOT UNDERSTOOD:' + command)
                 # #
