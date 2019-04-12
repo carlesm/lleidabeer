@@ -78,7 +78,8 @@ class LleidaBeer(object):
             # Command processing
             #
             # Notifications
-            for notification in self.notification_list:
+            while len(self.notification_list) > 0:
+                notification = self.notification_list.pop()
                 self.channel.send_notification(notification)
             time.sleep(5)
 

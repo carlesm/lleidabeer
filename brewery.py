@@ -71,6 +71,11 @@ class TemperatureSensor(Sensor):
         self.register_command("/temp", self.send_temp, use_asterisk=True)
         # TODO: /setalarm <sensor> <value>
         self.value = 15.0
+        if "pin" in kwargs:
+            self.pin = kwargs["pin"]
+        else:
+            self.pin = None
+
 
     def update_value(self):
         self.value = self.value + random.uniform(-1.0, 1.0)
@@ -112,6 +117,7 @@ class Heater(ActiveElement):
     def __init__(self):
         super(Heater, self).__init__()
         self.state = False
+        self.register_command("/heater", self.send_flow, use_asterisk=True)
 
     def activate(self, new_state):
         if new_state:
