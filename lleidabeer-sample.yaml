@@ -4,7 +4,10 @@ Telegram:
 
 Sensors:
   Temperature:
-    - 'Wort'
+    - 'Wort':
+        alarm: 25.0
+        slug: wort
+        pin: 4
     - 'Ambient'
   FlowMeter:
     - 'Main'
