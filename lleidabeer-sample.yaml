@@ -5,10 +5,13 @@ Telegram:
 Sensors:
   Temperature:
     - 'Wort':
+        type: dht11
         alarm: 25.0
         slug: wort
         pin: 4
-    - 'Ambient'
+    - 'Ambient':
+        type: mqtt
+        topic: 'sensor'
   FlowMeter:
     - 'Main'
     - 'Backup'

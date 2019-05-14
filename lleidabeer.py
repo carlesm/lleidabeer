@@ -22,8 +22,9 @@ class LleidaBeer(object):
                                          self.cfg["Telegram"]["Users"],
                                          self.cmd_list)
 
-    def _create_sensor_type(self, sensor_type, sensor_class ):
+    def _create_sensor_type(self, sensor_type, sensor_classes ):
         for ts in self.cfg['Sensors'][sensor_type]:
+
             if isinstance(ts, dict):
                 name = list(ts.keys())[0]
                 attri = ts[name]
@@ -31,6 +32,10 @@ class LleidaBeer(object):
                 name = ts
                 attri = dict()
             attri["factory"] = self
+            if isinstance(sensor_classes, dict):
+                sensor_class = sensor_classes[attri["type"]]
+            else:
+                sensor_class = sensor_classes
             self.sensor_list.append(sensor_class(name=name, **attri))
 
 
@@ -38,7 +43,11 @@ class LleidaBeer(object):
         # Create Sensors
         self.sensor_list = []
         stype = {
-            "Temperature": b.TemperatureSensor,
+            "Temperature":
+                {
+                    "dht11": b.TemperatureSensor,
+                    "mqtt": b.MQTTTemperatureSensor,
+                },
             "FlowMeter": b.FlowSensor,
             'CO2Meter': b.CO2Sensor,
         }
