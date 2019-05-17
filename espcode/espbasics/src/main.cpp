@@ -7,7 +7,7 @@ PubSubClient client(espClient);
 
 const char *ssid = "fameno-iot";
 const char *password = "provaprova";
-const char *mqtt_server = "172.16.105.127";
+const char *mqtt_server = "172.16.127.251";
 
 
 
@@ -39,5 +39,5 @@ void loop()
     delay(2000);
   }
   Serial.println("Connected to MQTT");
-  client.publish("sensor","10");
+  client.publish("sensor","14");
 }
