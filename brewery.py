@@ -83,6 +83,33 @@ class TemperatureSensor(Sensor):
     def send_temp(self, msg):
         return str(self.name)+" temperature is" + str(self.value)
 
+
+
+class MQTTTemperatureSensor(Sensor):
+    """TemperatureSensor"""
+    def __init__(self, name="MQTTTemperatureSensor", **kwargs):
+        super(TemperatureSensor, self).__init__(name, **kwargs)
+        self.register_command("/temp", self.send_temp, use_asterisk=True)
+        # TODO: /setalarm <sensor> <value>
+        self.value = 15.0
+        if "topic" in kwargs:
+            self.topic = kwargs["topic"]
+        else:
+            self.topic = None
+        # subscribe MQTT
+
+    def _mqtt_update(self):
+        # receive mqtt
+        pass
+
+    def update_value(self):
+        # self.value = self.value + random.uniform(-1.0, 1.0)
+        pass
+
+    def send_temp(self, msg):
+        return str(self.name)+" temperature is" + str(self.value)
+
+
 class CO2Sensor(Sensor):
     """CO2Sensor"""
     def __init__(self, name="CO2Sensor",  **kwargs):
