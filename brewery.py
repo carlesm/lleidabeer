@@ -105,6 +105,8 @@ class MQTTTemperatureSensor(Sensor):
         # receive mqtt
         pass
 
+
+
     def update_value(self):
         # self.value = self.value + random.uniform(-1.0, 1.0)
         pass
