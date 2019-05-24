@@ -29,6 +29,9 @@ class Sensor(Element):
         self.alarm = float(alarm)
 
     def get_value(self):
+        """
+        Return the value of the sensor after applying calibration
+        """
         self.update_value()
         return self.value * self.calibration
 
@@ -88,7 +91,7 @@ class TemperatureSensor(Sensor):
 class MQTTTemperatureSensor(Sensor):
     """TemperatureSensor"""
     def __init__(self, name="MQTTTemperatureSensor", **kwargs):
-        super(TemperatureSensor, self).__init__(name, **kwargs)
+        super(MQTTTemperatureSensor, self).__init__(name, **kwargs)
         self.register_command("/temp", self.send_temp, use_asterisk=True)
         # TODO: /setalarm <sensor> <value>
         self.value = 15.0
